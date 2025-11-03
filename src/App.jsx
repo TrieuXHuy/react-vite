@@ -1,8 +1,11 @@
-import './component/todo/todo.css';
-import TodoCreate from './component/todo/TodoCreate';
-import TodoData from './component/todo/ToDoData';
+import './components/todo/todo.css';
+import TodoCreate from './components/todo/TodoCreate';
+import TodoData from './components/todo/ToDoData';
 import reactLogo from './assets/react.svg';
 import { useState } from 'react';
+import Header from './components/layout/header';
+import Footer from './components/layout/footer';
+import { Outlet } from 'react-router-dom';
 
 const App = () => {
 
@@ -23,23 +26,26 @@ const App = () => {
   }
 
   return (
-    <div className="todo-container">
-      <div className="todo-title">Todo List</div>
-      <TodoCreate
-        addNewTodo={addNewTodo}
-      />
+    <>
+      <Header />
+      <div className="todo-container">
+        <div className="todo-title">Todo List</div>
+        <TodoCreate
+          addNewTodo={addNewTodo}
+        />
 
-      {todos.length === 0 ?
-        <div className='todo-img'>
-          <img src={reactLogo} alt="" className='logo' />
-        </div> :
-        <TodoData
-          todos={todos}
-          deleteTodo={deleteTodo}
-        />}
-
-
-    </div>
+        {todos.length === 0 ?
+          <div className='todo-img'>
+            <img src={reactLogo} alt="" className='logo' />
+          </div> :
+          <TodoData
+            todos={todos}
+            deleteTodo={deleteTodo}
+          />}
+      </div>
+      <Outlet />
+      <Footer />
+    </>
   )
 }
 
