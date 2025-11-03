@@ -3,7 +3,7 @@ import './footer.css';
 const Footer = () => {
     return (
         <>
-            <div class="footer">
+            <div className="footer">
                 <p>React Vite</p>
             </div>
         </>
