@@ -2,25 +2,24 @@ import './component/todo/todo.css';
 import TodoCreate from './component/todo/TodoCreate';
 import TodoData from './component/todo/ToDoData';
 import reactLogo from './assets/react.svg';
-import { use, useState } from 'react';
+import { useState } from 'react';
 
 const App = () => {
 
   const [todos, setTodos] = useState([
-    { id: 1, title: "Learn React" },
-    { id: 2, title: "Learn Vue" },
-    { id: 3, title: "Learn Angular" }
   ]);
 
-  const name = "Hoai Dan It";
-  const age = 20;
-  const data = {
-    address: "hanoi",
-    country: "vietnam"
+  const addNewTodo = (name) => {
+    const newTodo = {
+      id: todos.length + 1,
+      title: name
+    }
+    setTodos([...todos, newTodo]);
   }
 
-  const addNewTodo = (name) => {
-    alert(`addNewTodo: ${name}`);
+  const deleteTodo = (id) => {
+    const filteredTodos = todos.filter(todo => todo.id !== id);
+    setTodos(filteredTodos);
   }
 
   return (
@@ -29,15 +28,17 @@ const App = () => {
       <TodoCreate
         addNewTodo={addNewTodo}
       />
-      <TodoData
-        name={name}
-        age={age}
-        data={data}
-        todos={todos}
-      />
-      <div className='todo-img'>
-        <img src={reactLogo} alt="" className='logo' />
-      </div>
+
+      {todos.length === 0 ?
+        <div className='todo-img'>
+          <img src={reactLogo} alt="" className='logo' />
+        </div> :
+        <TodoData
+          todos={todos}
+          deleteTodo={deleteTodo}
+        />}
+
+
     </div>
   )
 }

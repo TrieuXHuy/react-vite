@@ -3,13 +3,9 @@ import { useState } from 'react';
 const TodoCreate = (props) => {
 
     //userState hook
-    const [valueInput, setValueInput] = useState("eric");
+    const [valueInput, setValueInput] = useState("");
 
     const { addNewTodo } = props;
-
-    const handleClick = () => {
-        console.log(valueInput);
-    }
 
     const handleOnChange = (event) => {
         setValueInput(event.target.value);
@@ -21,14 +17,15 @@ const TodoCreate = (props) => {
                 className="todo-input"
                 type="text"
                 onChange={handleOnChange}
+                value={valueInput}
             />
             <button
                 className="todo-button"
-                onClick={handleClick}
+                onClick={() => {
+                    addNewTodo(valueInput)
+                    setValueInput("");
+                }}
             >Create</button>
-            <div>
-                My text input is = {valueInput}
-            </div>
         </div>
     )
 }
