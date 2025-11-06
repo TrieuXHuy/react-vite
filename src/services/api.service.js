@@ -12,12 +12,24 @@ const createUserAPI = (fullName, email, password, phone) => {
     return axios.post(URL_BACKEND, data);
 }
 
-const updateUserAPI = (userId, userData) => {
-
+const updateUserAPI = (userId, fullName, phone) => {
+    const URL_BACKEND = "/api/v1/user";
+    const data = {
+        _id: userId,
+        fullName: fullName,
+        phone: phone
+    };
+    return axios.put(URL_BACKEND, data);
 }
 
 const fetchAllUsersAPI = () => {
     const URL_BACKEND = "/api/v1/user";
     return axios.get(URL_BACKEND);
 }
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI };
+
+const deleteUserAPI = (userId) => {
+    const URL_BACKEND = `/api/v1/user/${userId}`;
+    return axios.delete(URL_BACKEND);
+}
+
+export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI };
