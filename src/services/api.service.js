@@ -22,8 +22,19 @@ const updateUserAPI = (userId, fullName, phone) => {
     return axios.put(URL_BACKEND, data);
 }
 
-const fetchAllUsersAPI = () => {
+const updateUserAvatarAPI = (userId, avatar, fullName, phone) => {
     const URL_BACKEND = "/api/v1/user";
+    const data = {
+        _id: userId,
+        avatar: avatar,
+        fullName: fullName,
+        phone: phone
+    };
+    return axios.put(URL_BACKEND, data);
+}
+
+const fetchAllUsersAPI = (current, pageSize) => {
+    const URL_BACKEND = `/api/v1/user?current=${current}&pageSize=${pageSize}`;
     return axios.get(URL_BACKEND);
 }
 
@@ -32,4 +43,19 @@ const deleteUserAPI = (userId) => {
     return axios.delete(URL_BACKEND);
 }
 
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI };
+const upLoadFileAPI = (file, folder) => {
+    const URL_BACKEND = `/api/v1/file/upload`;
+    const config = {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "upload-type": folder
+        },
+
+    };
+
+    let formData = new FormData();
+    formData.append("fileImg", file);
+    return axios.post(URL_BACKEND, formData, config);
+}
+
+export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI, upLoadFileAPI, updateUserAvatarAPI };

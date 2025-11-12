@@ -6,7 +6,9 @@ import ViewUserDetail from './view.user.detail';
 import { deleteUserAPI } from '../../services/api.service';
 
 const UserTable = (props) => {
-    const { dataUsers, loadUser } = props;
+    const { dataUsers, loadUser, current, pageSize, total,
+        setCurrent, setPageSize
+    } = props;
 
     const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
     const [dataUpdate, setDataUpdate] = useState(null);
@@ -21,7 +23,8 @@ const UserTable = (props) => {
                 message: "Delete user successfully",
                 description: "Delete user successfully"
             });
-            await loadUser();
+            setCurrent(1);
+            // await loadUser();
         } else {
             notification.error({
                 message: "Error create failed",
@@ -31,6 +34,17 @@ const UserTable = (props) => {
     };
 
     const columns = [
+        {
+            title: "STT",
+            render: (_, record, index) => {
+                return (
+                    <>
+                        {(index + 1) + (current - 1) * pageSize}
+                    </>
+                )
+            }
+        },
+
         {
             title: 'Id',
             dataIndex: '_id',
@@ -74,12 +88,12 @@ const UserTable = (props) => {
                             description="Are you sure to delete this user?"
                             onConfirm={() => confirm(record._id)}
                             // onCancel={cancel}
+                            placement="left"
                             okText="Yes"
                             cancelText="No"
                         >
                             <DeleteOutlined
                                 style={{ cursor: "pointer", color: "red" }}
-                                danger
                             />
                         </Popconfirm>
                     </div>
@@ -88,12 +102,43 @@ const UserTable = (props) => {
         },
     ];
 
+    const onChange = (pagination, filters, sorter, extra) => {
+        if (pagination && pagination.current) {
+            if (+pagination.current !== +current) {
+                setCurrent(+pagination.current);
+            }
+        }
+
+        if (pagination && pagination.pageSize) {
+            if (+pagination.pageSize !== +pageSize) {
+                setPageSize(+pagination.pageSize);
+            }
+        }
+
+        if (pagination && pagination.pageSize) {
+            if (+pagination.pageSize !== +pageSize) {
+                setPageSize(+pagination.pageSize);
+            }
+        }
+    };
+
     return (
         <>
             <Table
                 columns={columns}
                 dataSource={dataUsers}
                 rowKey={"_id"}
+                pagination={
+                    {
+                        current: current,
+                        pageSize: pageSize,
+                        showSizeChanger: true,
+                        total: total,
+                        showTotal: (total, range) => { return (<div> {range[0]}-{range[1]} trên {total} rows</div>) }
+                    }
+                }
+                onChange={onChange}
+
             />
             <UpdateUserModal
                 isModalUpdateOpen={isModalUpdateOpen}
@@ -107,6 +152,7 @@ const UserTable = (props) => {
                 open={open}
                 setOpen={setOpen}
                 dataUser={dataUser}
+                loadUser={loadUser}
             />
         </>
     );
