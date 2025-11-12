@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { HomeOutlined, BookOutlined, UserAddOutlined } from '@ant-design/icons';
+import { HomeOutlined, BookOutlined, UserAddOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { useState } from 'react';
 
@@ -18,6 +18,15 @@ const items = [
         label: <Link to="/books">Books</Link>,
         key: 'books',
         icon: <BookOutlined />,
+    },
+    {
+        label: 'Cài đặt',
+        key: 'SubMenu',
+        icon: <SettingOutlined />,
+        children: [
+            { label: (<Link to="/login">Đăng nhập</Link>), key: 'setting:1' },
+            { label: 'Đăng xuất', key: 'setting:2' },
+        ],
     },
 ];
 

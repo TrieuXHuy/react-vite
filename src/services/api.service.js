@@ -43,6 +43,17 @@ const deleteUserAPI = (userId) => {
     return axios.delete(URL_BACKEND);
 }
 
+const registerUserAPI = (fullName, email, password, phone) => {
+    const URL_BACKEND = "/api/v1/user/register";
+    const data = {
+        fullName: fullName,
+        email: email,
+        password: password,
+        phone: phone
+    };
+    return axios.post(URL_BACKEND, data);
+}
+
 const upLoadFileAPI = (file, folder) => {
     const URL_BACKEND = `/api/v1/file/upload`;
     const config = {
@@ -58,4 +69,8 @@ const upLoadFileAPI = (file, folder) => {
     return axios.post(URL_BACKEND, formData, config);
 }
 
-export { createUserAPI, updateUserAPI, fetchAllUsersAPI, deleteUserAPI, upLoadFileAPI, updateUserAvatarAPI };
+export {
+    createUserAPI, updateUserAPI, fetchAllUsersAPI,
+    deleteUserAPI, upLoadFileAPI, updateUserAvatarAPI,
+    registerUserAPI
+};
