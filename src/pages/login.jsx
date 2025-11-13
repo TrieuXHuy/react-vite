@@ -1,17 +1,22 @@
 import { Button, Col, Divider, Form, Input, message, notification, Row } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { loginAPI } from "../services/api.service";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/context/auth.context";
 
 const LoginPage = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext);
+
     const onFinish = async (values) => {
         setLoading(true);
         const response = await loginAPI(values.email, values.password);
         if (response.data) {
             message.success("Login successful!");
+            localStorage.setItem("access_token", response.data.access_token);
+            setUser(response.data.user);
             navigate("/");
         } else {
             notification.error({

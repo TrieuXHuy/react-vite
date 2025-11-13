@@ -1,38 +1,29 @@
-import { Link, NavLink } from 'react-router-dom';
-import { HomeOutlined, BookOutlined, UserAddOutlined, SettingOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
+import { HomeOutlined, BookOutlined, UserAddOutlined, LoginOutlined, AliwangwangOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
-import { useState } from 'react';
-
-const items = [
-    {
-        label: <Link to="/">Home</Link>,
-        key: 'home',
-        icon: <HomeOutlined />,
-    },
-    {
-        label: <Link to="/users">Users</Link>,
-        key: 'users',
-        icon: <UserAddOutlined />,
-    },
-    {
-        label: <Link to="/books">Books</Link>,
-        key: 'books',
-        icon: <BookOutlined />,
-    },
-    {
-        label: 'Cài đặt',
-        key: 'SubMenu',
-        icon: <SettingOutlined />,
-        children: [
-            { label: (<Link to="/login">Đăng nhập</Link>), key: 'setting:1' },
-            { label: 'Đăng xuất', key: 'setting:2' },
-        ],
-    },
-];
+import { useContext, useState } from 'react';
+import { AuthContext } from '../context/auth.context';
 
 const Header = () => {
 
-    const [current, setCurrent] = useState('mail');
+    const [current, setCurrent] = useState('');
+
+    const { user } = useContext(AuthContext);
+
+    const items = [
+        { label: <Link to="/">Home</Link>, key: 'home', icon: <HomeOutlined /> },
+        { label: <Link to="/users">Users</Link>, key: 'users', icon: <UserAddOutlined /> },
+        { label: <Link to="/books">Books</Link>, key: 'books', icon: <BookOutlined /> },
+        !user?.id && { label: <Link to="/login">Đăng nhập</Link>, key: 'login', icon: <LoginOutlined /> },
+        user?.id && {
+            label: `Welcome ${user.fullName}`,
+            key: 'setting',
+            icon: <AliwangwangOutlined />,
+            children: [{ label: 'Đăng xuất', key: 'logout' }],
+        },
+    ].filter(Boolean); // item => Boolean(item)
+
+
     const onClick = e => {
         setCurrent(e.key);
     };
