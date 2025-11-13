@@ -1,12 +1,25 @@
-import { Button, Col, Divider, Form, Input, notification, Row } from "antd";
+import { Button, Col, Divider, Form, Input, message, notification, Row } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { registerUserAPI } from "../services/api.service";
+import { loginAPI } from "../services/api.service";
+import { useState } from "react";
 
 const LoginPage = () => {
     const [form] = Form.useForm();
-    // const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const onFinish = async (values) => {
-        console.log("Login values:", values);
+        setLoading(true);
+        const response = await loginAPI(values.email, values.password);
+        if (response.data) {
+            message.success("Login successful!");
+            navigate("/");
+        } else {
+            notification.error({
+                message: "Login Failed",
+                description: JSON.stringify(response.message)
+            });
+        }
+        setLoading(false);
     };
     return (
         <>
@@ -82,6 +95,7 @@ const LoginPage = () => {
                             <Row justify={"space-between"} align="middle">
                                 <Col>
                                     <Button
+                                        loading={loading}
                                         type="primary"
                                         htmlType="submit"
                                         block
